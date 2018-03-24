@@ -10,6 +10,7 @@ import rx.Observable;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 public class RibbonTemplate {
@@ -17,7 +18,20 @@ public class RibbonTemplate {
     private RetryHandler retryHandler;
     private ILoadBalancer loadBalancer;
 
+    public RibbonTemplate(String... servers) {
+        List<Server> list = new ArrayList<>(servers.length);
+        for (String server : servers) {
+            list.add(new Server(server));
+        }
+
+        this.init(list);
+    }
+
     public RibbonTemplate(List<Server> serverList) {
+       this.init(serverList);
+    }
+
+    private void init(List<Server> serverList) {
         // retry handler that does not retry on same server, but on a different server
         retryHandler =  new DefaultLoadBalancerRetryHandler(0, serverList.size(), true);
 
@@ -35,7 +49,7 @@ public class RibbonTemplate {
                 .submit(server -> {
                     URL url;
                     try {
-                        url = new URL("http://" + server.getHost() + ":" + server.getPort() + path);
+                        url = new URL( "http://" + server.getHost() + ":" + server.getPort() + path);
                         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
                         T result = mapper.readValue(new InputStreamReader(conn.getInputStream()), clazz);
@@ -50,7 +64,7 @@ public class RibbonTemplate {
         return server -> {
             URL url;
             try {
-                url = new URL("http://" + server.getHost() + ":" + server.getPort());
+                url = new URL("http://" + server.getHost() + ":" + server.getPort() + "/health");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
                 return conn.getResponseCode() == 200;

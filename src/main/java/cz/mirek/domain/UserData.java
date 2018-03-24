@@ -6,13 +6,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserData {
     @JsonProperty
-    private int userId;
+    public int userId;
 
     @JsonProperty
-    private int id;
+    public int id;
 
     @JsonProperty
-    private String title;
+    public String title;
 
     @Override
     public String toString() {
