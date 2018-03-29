@@ -38,7 +38,7 @@ public class RibbonTemplateTest {
     @Test
     public void shouldReturnUserDataNoLoadBalancing() throws Exception {
         RibbonTemplate template = new RibbonTemplate("localhost:9000");
-        UserData result = template.call("/data", UserData.class);
+        UserData result = template.getForObject("/data", UserData.class);
 
         assertThat(result.userId, is(ID_EXPECTATION));
 
@@ -49,7 +49,7 @@ public class RibbonTemplateTest {
     @Test
     public void shouldReturnUserDataWithLoadBalancingOnFakeServer() throws Exception {
         RibbonTemplate template = new RibbonTemplate("nonexisting.server.com", "localhost:9000");
-        UserData result = template.call("/data", UserData.class);
+        UserData result = template.getForObject("/data", UserData.class);
 
         assertThat(result.userId, is(ID_EXPECTATION));
 
@@ -63,7 +63,7 @@ public class RibbonTemplateTest {
 
         int loop = 3;
         for (int i = 0; i < loop; i++) {
-            UserData result = template.call("/data", UserData.class);
+            UserData result = template.getForObject("/data", UserData.class);
 
             assertThat(result.userId, is(ID_EXPECTATION));
         }

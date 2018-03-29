@@ -41,7 +41,7 @@ public class RibbonTemplate {
                 .buildFixedServerListLoadBalancer(serverList);
     }
 
-    public <T> T call(String path, Class<T> clazz) throws Exception {
+    public <T> T getForObject(String path, Class<T> clazz) throws Exception {
         return LoadBalancerCommand.<T>builder()
                 .withLoadBalancer(loadBalancer)
                 .withRetryHandler(retryHandler)
@@ -75,6 +75,10 @@ public class RibbonTemplate {
     }
 
     public LoadBalancerStats getLoadBalancerStats() {
-        return ((BaseLoadBalancer) loadBalancer).getLoadBalancerStats();
+        return this.getLoadBalancer().getLoadBalancerStats();
+    }
+
+    public BaseLoadBalancer getLoadBalancer() {
+        return (BaseLoadBalancer) loadBalancer;
     }
 }

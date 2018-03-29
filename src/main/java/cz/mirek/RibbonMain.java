@@ -18,14 +18,14 @@ public class RibbonMain {
         List<Server> serverList = Arrays.asList(uknownServer, uknownServer, uknownServer, uknownServer, uknownServer, server);
         RibbonTemplate template = new RibbonTemplate(serverList);
 
-        UserData result = template.call("/posts/1", UserData.class);
-        result = template.call("/posts/1", UserData.class);
-        result = template.call("/posts/1", UserData.class);
-        result = template.call("/posts/1", UserData.class);
-        result = template.call("/posts/1", UserData.class);
-        result = template.call("/posts/1", UserData.class);
-        result = template.call("/posts/1", UserData.class);
-        result = template.call("/posts/1", UserData.class);
+        UserData result = template.getForObject("/posts/1", UserData.class);
+        result = template.getForObject("/posts/1", UserData.class);
+        result = template.getForObject("/posts/1", UserData.class);
+        result = template.getForObject("/posts/1", UserData.class);
+        result = template.getForObject("/posts/1", UserData.class);
+        result = template.getForObject("/posts/1", UserData.class);
+        result = template.getForObject("/posts/1", UserData.class);
+        result = template.getForObject("/posts/1", UserData.class);
 
         System.out.println(result);
 
